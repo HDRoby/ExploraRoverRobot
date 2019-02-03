@@ -26,3 +26,13 @@ Aim of this project is to design and build a robotic platform that will provide 
 - The energy consumption is frugal and a certain degree of autonomy is pursued. i.e. solar panel for energy harvesting or self recharging station could be implemented.
 - The communication is bi-directional and mainly intended for monitoring and configuration than control (RC style).
 - The robot can take advantage of many and concurrent localisation systems to establish its position in the environment. i.e. GPS, vision, LIDAR, utrasound, odometry, IMU, ...
+
+
+## High level systems
+
+![Systems](images/High_level_systems.png)
+
+### Power management system
+
+![Power management system](images/PowerMangementSystem.png)
+
