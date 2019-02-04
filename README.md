@@ -39,3 +39,8 @@ Aim of this project is to design and build a robotic platform that will provide 
 ### Motion control system
 
 ![Motion control system](images/MotionControlSystem.png)
+
+### Communication system
+
+![Communication system](images/CommunicationSystem.png)
+
