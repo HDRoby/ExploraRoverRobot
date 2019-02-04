@@ -36,3 +36,6 @@ Aim of this project is to design and build a robotic platform that will provide 
 
 ![Power management system](images/PowerMangementSystem.png)
 
+### Motion control system
+
+![Motion control system](images/MotionControlSystem.png)
