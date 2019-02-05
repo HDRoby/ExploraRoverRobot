@@ -30,7 +30,7 @@ Aim of this project is to design and build a robotic platform that will provide 
 
 ## High level systems
 
-![Systems](images/High_level_systems.png)
+![Systems](images/System_overview.svg)
 
 ### Power management system
 
