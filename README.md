@@ -34,7 +34,14 @@ Aim of this project is to design and build a robotic platform that will provide 
 
 ### Power management system
 
-![Power management system](images/PowerMangementSystem.png)
+This is responsible for providing power to the rover and all its subsystems, to monitor and recharge the batteries using both an external power source and solar panels. The system also monitors the current draw in real time by its major components (motors and sub-systems as a whole); where possible each sub-system will provide its own power consumpion. Communications with the microcontroller (Arduino Micro) and other sub-systems is achieved via UART for the phisical layer and with MQTT broker at ISO Application Layer (there will be a process on the main board (Raspberry Pi) that will have a process that act as a MQTT broker and that can communicate with a UART). 
+
+Two mechanichal switches break the circuit from the batteries to the rest of the system and a relay allow to use the secondary battery in parallel with the main one, allowing for rerouting energy where and when needed.
+
+
+![Power management system](images/Power_Supply_System.svg)
+
+
 
 ### Motion control system
 
