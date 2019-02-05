@@ -34,9 +34,14 @@ Aim of this project is to design and build a robotic platform that will provide 
 
 ### Power management system
 
-This is responsible for providing power to the rover and all its subsystems, to monitor and recharge the batteries using both an external power source and solar panels. The system also monitors the current draw in real time by its major components (motors and sub-systems as a whole); where possible each sub-system will provide its own power consumpion. Communications with the microcontroller (Arduino Micro) and other sub-systems is achieved via UART for the phisical layer and with MQTT broker at ISO Application Layer (there will be a process on the main board (Raspberry Pi) that will have a process that act as a MQTT broker and that can communicate with a UART). 
+This is responsible for providing power to the rover and all its subsystems, to monitor and recharge the batteries using both an external power source and solar panels. The system monitors the current drawn in real time by its major components: motors and all sub-systems; where possible each sub-system will provide its own power consumpion. Communications with the microcontroller (Arduino Micro) and other sub-systems is achieved via UART for the physical layer and with MQTT broker at ISO Application Layer (there will be a process on the main board (Raspberry Pi) that will have a process that act as a MQTT broker and that can communicate with a UART). 
 
-Two mechanichal switches break the circuit from the batteries to the rest of the system and a relay allow to use the secondary battery in parallel with the main one, allowing for rerouting energy where and when needed.
+Two mechanichal switches isolate the batteries from the rest of the system and a matrix of relays allow to re-route energy where needed:
+- Motors and Electronics with separated batteries
+- Motors and Electronics with joined batteries
+- Only Electronics with its own battery
+- Only Electronics with joined batteries
+
 
 
 ![Power management system](images/Power_Supply_System.svg)
