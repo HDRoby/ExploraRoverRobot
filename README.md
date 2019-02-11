@@ -47,3 +47,14 @@ Two mechanichal switches isolate the batteries from the rest of the system.
 ### Communication system
 
 ![Communication system](images/Communication_System.svg)
+
+### Logging system
+
+The logging system is responsible for collecting data from each subsystem and storing it locally; the database of choice is InfluxDB (https://www.influxdata.com/time-series-platform/influxdb) that is a high-performance data store written specifically for time series data. The data we want lo log is in the format of time series and can be grouped in:
+- **instrumentation data**. This is the data collected by the log system for each process that runs on every Raspberry PI. We use a logger that persists data on files, organised in folders with a specific naming convention (details in the paragraph). InfluxDB is installed on the main RPI and each other RPI has a process that periodically reads and import the log files into the DB, grouped by severity and by source and that takes care of their housekeeping.
+- **system health data**. This collects all the data that allows to monitor and understand the system status. i.e. wifi RSSI, 2.4GHZ radio status, battery levels, system uptime, solar panes in use, number of remote sessions, number of battery recharges since day 1, etc.
+- **sensors data**. This is the main source of data and is a collection of all the sensors, logged at the most appropriate rate. The only thing is not logged here, and probably is only stored in a folder, is the image video and audio (when capture is on) and image stills.
+
+To complement the logging system, we will use Grafana  (https://grafana.com) to plot the data series collected.
+
+
