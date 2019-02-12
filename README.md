@@ -58,3 +58,8 @@ The logging system is responsible for collecting data from each subsystem and st
 To complement the logging system, we will use Grafana  (https://grafana.com) to plot the data series collected.
 
 ![Logging system](images/Logging_system.png)
+
+### Raspberry PI and Arduino systems
+RPI is a much more powerful board than Arduino and the Linux OS simplify the management of the overall system, from the inter process communication (IPC) to the filesystem, wireless connectivity (WIFI & BTLE), multi process and multi threading. This is an overview of the architecture used to interact among a RPI and one or more Arduino. Note: in the robot there will be more than a single unit like this, that we consider as a basic processing unit (RPI + 1 or 2 Arduino) all RPIs are connected via Ethernet hub.
+
+![RPI Arduino system](images/RPI_Arduino_System.png)
