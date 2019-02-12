@@ -57,5 +57,9 @@ The logging system is responsible for collecting data from each subsystem and st
 
 To complement the logging system, we will use Grafana  (https://grafana.com) to plot the data series collected.
 
+<<<<<<< HEAD
 ![Logging system](images/Logging_System.png)
+=======
+![Logging system](images/Logging_System.svg)
+>>>>>>> 2a22f44e22be5c8aed95d709e67485e53f606ba1
 
