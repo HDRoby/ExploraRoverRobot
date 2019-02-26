@@ -93,7 +93,7 @@ Values read from the controller:
 
 valid values:
 
-  $$ I_{[mA]} =  \frac{1}{0.155} \times V_{[mV]} $$
+  $I_{[mA]} =  \frac{1}{0.155} \times V_{[mV]}$
 
 *note*: speed_rpm is after gear reduction
 
