@@ -44,6 +44,12 @@ V+  A | V+ B
 
 Commands sent to the controller:
 
+to set the wheel diameter, used to compute the speed and to drive the robot using speed vector in the robot world:
+```
+'wheel_diam_mm': 120
+```
+
+to set each motor speed as percentage of the max speed
 ```
 'motor':{
           'side': 'left',
@@ -74,13 +80,15 @@ Values read from the controller:
           'rot': 'cw',
           'pwm': 98,
           'current_ma': 1450,
-          'speed_rpm': 54           
+          'speed_rpm': 54,
+          'speed_m_s': 0.339           
         }
 ```
 
 valid values:
 ```
   current_ma =  Voltage (mV) / 0.155 
-  speed_rpm = after gear reduction
 ```
+*note*: speed_rpm is after gear reduction
+
 to compute the actual speed in [m/s], given the wheel diameter in [m]: speed = (rpm / 60) * PI * d
