@@ -35,3 +35,14 @@ float Battery::getCurrent()
 {
   return _current_scale_factor * ADC_TO_VOLT(analogRead(_i_sense_pin));
 }
+
+StaticJsonDocument<200> Battery::getJson()
+{
+  StaticJsonDocument<200> doc = getBasicJsonDocument();
+
+  doc["device"] = "battery";
+  doc["volt"] = getVoltage();
+  doc["current"] = getCurrent();
+
+  return doc;
+}

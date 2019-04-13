@@ -11,13 +11,23 @@ QuadratureEncoder::QuadratureEncoder(uint8_t q1_pin, uint8_t q2_interrupt_pin)
   _old_position = 0;
   _new_time;
   _old_time = 0;
-
+  _attribute = "";
   
   pinMode(_q1_pin, INPUT);
   pinMode(_q1_pin, INPUT);
   digitalWrite(_q1_pin, INPUT_PULLUP);
   pinMode(_q2_interrupt_pin, INPUT);
   digitalWrite(_q2_interrupt_pin, INPUT_PULLUP);
+}
+
+StaticJsonDocument<200> QuadratureEncoder::getJson()
+{
+  StaticJsonDocument<200> doc = getBasicJsonDocument();
+  
+  doc["sensor"] = "q.encoder";
+  doc["speed"] = getSpeed();  
+
+  return doc;
 }
 
 void QuadratureEncoder::setupInterruptHandler(void (*ISR)(void))

@@ -3,16 +3,18 @@
 
 #include "Arduino.h"
 #include "MotorControllerDefines.h"
+#include "JsonSerializable.h"
 
-
-class MotorController
+class MotorController: public JsonSerializable
 {
-  public:
+  public:    
     MotorController(uint8_t pwm_1_pin, uint8_t pwm_2_pin, uint8_t i_sense_pin);
     float getCurrent();
     float getSpeed();
     // range [-1, +1] the sign indicates rotation ccw or cc
     void setSpeed(float speed);
+    void setAttribute(String attribute);
+    virtual StaticJsonDocument<200> getJson();
     
   private:
     uint8_t absSpeedToDutyCycle(float speed);

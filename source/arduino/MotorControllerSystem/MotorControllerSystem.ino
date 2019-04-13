@@ -3,14 +3,8 @@
  * Demo code to test the MotorControllerSystem and the libraries:
  * Battery, MotorController and QuadratureEncoder
  * 
- * It loops through a range of speeds [-50% to 50%] of the max speed.
- * Prints a set of measures:
- * Batteries (main and motors): V, I
- * Motors (left and right): 
- *    Speed (as %), 
- *    I drawn (at the moment not converted -> still is V fromADC), 
- *    measured speed (From quadrature encoder, at the moment not converted)   
- * Hull flood sensor: at the moment only the V from ADC 
+ * Accepts input on the serial line and changes motor speed where [-1.0:1.0]
+ * Prints a set of measures in json format using ArduinoJson library
  * 
  * IMPORTANT: 
  * Q2_A is still on pin 7 and MUST be moved to pin2 that on the NANO can raise an interrupt
@@ -22,6 +16,11 @@
 #include "Battery.h"
 #include "MotorController.h"
 #include "QuadratureEncoder.h"
+#include "JsonSerializable.h"
+#include "HullFloodSensor.h"
+#include "SerialCommand.h"
+#include <ArduinoJson.h>
+
 
 Battery mainBattery(MAIN_BATT_V_SENSE_PIN, MAIN_BATT_I_SENSE_PIN);
 Battery motorBattery(MOTORS_BATT_V_SENSE_PIN, MOTORS_BATT_I_SENSE_PIN);
@@ -32,31 +31,66 @@ MotorController motor_right(MOTOR_R_PWM_1_PIN, MOTOR_R_PWM_2_PIN, MOTOR_R_I_SENS
 QuadratureEncoder encoder_left(Q1_B, Q2_B);
 QuadratureEncoder encoder_right(Q1_A, Q2_A);
 
-float m_speed = 0.0;
-float dir = 1;
-uint16_t hullFlood;
+HullFloodSensor floodSensor(HULL_FLOOD_SENSE_PIN);
+
+SerialCommand commands;
 
 void setup() {
+  
   Serial.begin(9600); 
 
+  commands.addCommand("speed",setMotorsSpeed);  
+  commands.addCommand("stop",stopMotors);  
+
+  motor_left.setAttribute("left");
+  motor_right.setAttribute("right");
+  
   mainBattery.setVoltageScaleFactor(2.0);
+  mainBattery.setAttribute("main");
+  
   motorBattery.setVoltageScaleFactor(2.0);
+  motorBattery.setAttribute("motor");
 
   encoder_left.setupInterruptHandler(ISREncoderLeft);
+  encoder_left.setAttribute("left");
+  
   encoder_right.setupInterruptHandler(ISREncoderRight);
+  encoder_right.setAttribute("right");
+
+  floodSensor.setAttribute("bottom");
+
+  stopMotors();
 }
 
 void loop() {
-  hullFlood = analogRead(HULL_FLOOD_SENSE_PIN);
-  
-  motor_left.setSpeed(m_speed);
-  motor_right.setSpeed(m_speed);
+  commands.readSerial();    
+  printJson();  
+  delay(500);
+}
 
-  printToSerial();
+void printJson()
+{  
+  serializeJson(motor_left.getJson(), Serial);
+  Serial.println();
 
-  updateMotorsSpeed();  
-  
-  delay(2000);
+  serializeJson(motor_right.getJson(), Serial);
+  Serial.println();
+
+  serializeJson(mainBattery.getJson(), Serial);
+  Serial.println();
+
+  serializeJson(motorBattery.getJson(), Serial);
+  Serial.println();
+
+  serializeJson(encoder_left.getJson(), Serial);
+  Serial.println();
+
+  serializeJson(encoder_right.getJson(), Serial);
+  Serial.println();
+
+  serializeJson(floodSensor.getJson(), Serial);
+  Serial.println();
+
 }
 
 void ISREncoderLeft()
@@ -69,46 +103,20 @@ void ISREncoderRight()
   encoder_right.handleInterrupt();
 }
 
-void updateMotorsSpeed()
-{
-  m_speed += 0.05 * dir;
-
-  if (m_speed > 0.5) dir = -1;
-  if (m_speed < -0.5) dir = 1;
+void setMotorsSpeed() {
+  char *arg;
+  
+  arg = commands.next();
+  if (arg != NULL) {    
+     motor_left.setSpeed((float)atoi(arg)/100);    
+  }
+  arg = commands.next();
+  if (arg != NULL) {    
+     motor_right.setSpeed((float)atoi(arg)/100);    
+  }
 }
 
-void printToSerial()
-{
-  Serial.print("Batt main [V,I]: ");
-  Serial.print(mainBattery.getVoltage());
-  Serial.print(" ");
-  Serial.print(mainBattery.getCurrent());
-  Serial.print(" ");
-  
-  Serial.print("Batt motors [V,I]: ");
-  Serial.print(motorBattery.getVoltage());
-  Serial.print(" ");
-  Serial.print(motorBattery.getCurrent());
-  Serial.print(" ");
-  
-  Serial.print("Motor L [dc,I,enc]: ");
-  Serial.print(motor_left.getSpeed());
-  Serial.print(" ");
-  Serial.print(motor_left.getCurrent());
-  Serial.print(" ");
-  Serial.print(encoder_left.getSpeed());
-  Serial.print(" ");
-
-  Serial.print("Motor R [dc,I,enc]: ");
-  Serial.print(motor_right.getSpeed());
-  Serial.print(" ");
-  Serial.print(motor_right.getCurrent());
-  Serial.print(" ");
-  Serial.print(encoder_right.getSpeed());
-  Serial.print(" ");
-
-  Serial.print("Hull flood: ");
-  Serial.print(hullFlood);
-  
-  Serial.println("");
+void stopMotors() {  
+  motor_right.setSpeed(0);    
+  motor_left.setSpeed(0);    
 }

@@ -3,14 +3,16 @@
 
 #include "Arduino.h"
 #include "MotorControllerDefines.h"
+#include "JsonSerializable.h"
 
-class QuadratureEncoder
+class QuadratureEncoder: public JsonSerializable
 {
   public:
     QuadratureEncoder(uint8_t q1_pin, uint8_t q2_interrupt_pin);
     void setupInterruptHandler(void (*ISR)(void));
     void handleInterrupt();
-    float getSpeed();
+    float getSpeed();    
+    virtual StaticJsonDocument<200> getJson();
     
   private:   
     

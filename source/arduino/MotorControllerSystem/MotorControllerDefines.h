@@ -26,4 +26,7 @@
 #define QUANTUM                     5.0 / 1024.0;
 #define ADC_TO_VOLT(adc) adc * QUANTUM 
 
+#define LEFT                        0
+#define RIGHT                       1
+
 #endif

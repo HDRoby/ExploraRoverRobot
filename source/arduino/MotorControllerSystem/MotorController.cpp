@@ -13,6 +13,22 @@ MotorController::MotorController(uint8_t pwm_1_pin, uint8_t pwm_2_pin, uint8_t i
   setSpeed(0);
 }
 
+void MotorController::setAttribute(String attribute)
+{
+  _attribute = attribute;
+}
+
+StaticJsonDocument<200> MotorController::getJson()
+{
+  StaticJsonDocument<200> doc = getBasicJsonDocument();
+  
+  doc["device"] = "motor";
+  doc["speed"] = getSpeed();
+  doc["current"] = getCurrent();
+
+  return doc;
+}
+
 float MotorController::getCurrent()
 {
   return ADC_TO_VOLT(analogRead(_i_sense_pin));
