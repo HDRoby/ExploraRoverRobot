@@ -19,14 +19,22 @@
 #define HULL_FLOOD_SENSE_PIN        A6
 
 #define Q1_A                        8
-#define Q2_A                        7 // this MUST be moved to pin 2 because only pin 2 and 3 are interruptible !
+#define Q2_A                        2
 #define Q1_B                        4
 #define Q2_B                        3
 
-#define QUANTUM                     5.0 / 1024.0;
+#define VFS                         5.0
+#define VFS_HALF                    VFS / 2.0
+#define ADC_RES                     1024.0
+#define QUANTUM                     VFS / ADC_RES
 #define ADC_TO_VOLT(adc) adc * QUANTUM 
+
+// sensitivity expressed in mV/A
+#define CURR_SENSITIVITY_30A        66  
+#define CURR_SENSITIVITY_5A         185
 
 #define LEFT                        0
 #define RIGHT                       1
+
 
 #endif

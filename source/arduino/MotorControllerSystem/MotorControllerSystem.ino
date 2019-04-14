@@ -6,9 +6,6 @@
  * Accepts input on the serial line and changes motor speed where [-1.0:1.0]
  * Prints a set of measures in json format using ArduinoJson library
  * 
- * IMPORTANT: 
- * Q2_A is still on pin 7 and MUST be moved to pin2 that on the NANO can raise an interrupt
- * 
  */
 
 
@@ -20,6 +17,12 @@
 #include "HullFloodSensor.h"
 #include "SerialCommand.h"
 #include <ArduinoJson.h>
+
+
+#define BATTERY_DEBUG              
+#define MOTOR_CONTROLLER_DEBUG              
+#define HULL_FLOOD_DEBUG              
+#define QUADRATURE_ENCODER_DEBUG              
 
 
 Battery mainBattery(MAIN_BATT_V_SENSE_PIN, MAIN_BATT_I_SENSE_PIN);
@@ -65,7 +68,7 @@ void setup() {
 void loop() {
   commands.readSerial();    
   printJson();  
-  delay(500);
+  delay(200);
 }
 
 void printJson()
@@ -87,10 +90,9 @@ void printJson()
 
   serializeJson(encoder_right.getJson(), Serial);
   Serial.println();
-
+  
   serializeJson(floodSensor.getJson(), Serial);
   Serial.println();
-
 }
 
 void ISREncoderLeft()

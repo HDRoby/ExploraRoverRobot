@@ -21,9 +21,14 @@ void Battery::setVoltageScaleFactor(float scale)
   _voltage_scale_factor = scale;
 }
 
-void Battery::setCurrentScaleFactor(float scale)
+void Battery::setCurrentScale30A()
 {
-  _current_scale_factor = scale;
+  _current_scale_factor = CURR_SENSITIVITY_30A;
+}
+
+void Battery::setCurrentScale5A()
+{
+  _current_scale_factor = CURR_SENSITIVITY_5A;
 }
 
 float Battery::getVoltage()
@@ -33,7 +38,7 @@ float Battery::getVoltage()
 
 float Battery::getCurrent()
 {
-  return _current_scale_factor * ADC_TO_VOLT(analogRead(_i_sense_pin));
+  return  (ADC_TO_VOLT(analogRead(_i_sense_pin)) - VFS_HALF) * 1000 / _current_scale_factor;
 }
 
 StaticJsonDocument<200> Battery::getJson()
